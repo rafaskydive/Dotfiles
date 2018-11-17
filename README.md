@@ -1,2 +1,2 @@
-# grub
-Grub dots
+# grub, vim, fish, ranger, profile
+recent dots
