@@ -1,0 +1,7 @@
+linux-fbqo:~ # preload firefox
+linux-fbqo:~ # preload vlc
+linux-fbqo:~ # preload gimp
+linux-fbqo:~ # preload darktable
+linux-fbqo:~ # preload lightworks
+ecc_enable_override
+setkeycodes e02b 0xab
