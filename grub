@@ -9,7 +9,7 @@ GRUB_DEFAULT=saved
 GRUB_HIDDEN_TIMEOUT=1
 GRUB_HIDDEN_TIMEOUT_QUIET=true
 GRUB_TIMEOUT=0
-GRUB_CMDLINE_LINUX_DEFAULT="resume=/dev/disk/by-id/ata-Samsung_SSD_840_PRO_Series_S12PNEACB00272J-part6 psmouse.synaptics_intertouch=1 amdgpu.dc=1 si_support=1 cik_support=1 ngg=q splash=silent quiet console=ttyS0 loglevel=0 vga=current udev.log_priority=0 rd.udev.log_priority=0 systemd.show_status=false rd.systemd.show_status=false vt.global_cursor_default=0 showopts trace_clock=local elevator=cfq"
+GRUB_CMDLINE_LINUX_DEFAULT="resume=/dev/disk/by-id/ata-Samsung_SSD_840_PRO_Series_S12PNEACB00272J-part6 ecc_enable_override psmouse.synaptics_intertouch=1 amdgpu.dc=1 si_support=1 cik_support=1 ngg=q splash=silent quiet console=ttyS0 loglevel=0 vga=current udev.log_priority=0 rd.udev.log_priority=0 systemd.show_status=false rd.systemd.show_status=false vt.global_cursor_default=0 showopts trace_clock=local elevator=cfq"
 GRUB_CMDLINE_LINUX=""
 
 # Uncomment to automatically save last booted menu entry in GRUB2 environment
