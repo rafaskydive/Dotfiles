@@ -1,4 +1,4 @@
-## Easiest option to SSH into the machine you're working.
+## Easiest option to SSH into the machine you're working. This should be performed in the physical machine.
 ## Set it up with:
 
 vi /etc/ssh/sshd_config
@@ -8,6 +8,8 @@ vi /etc/ssh/sshd_config
 systemctl restart sshd
 
 Note: After installation it is recommended to harden SSH. The first step would be to remove PermitRootLogin yes from /etc/ssh/sshd_config.
+
+root@archiso ~ # passwd
 
 ##Roadmap arch
 
