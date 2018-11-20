@@ -94,7 +94,7 @@ sda      8:0    0  xxxxG  0 disk
 └─sda4   8:4    0  XXXXG  0 part 
 sr0     11:0    1   586M  0 rom  /run/archiso/bootmnt
 
-root@archiso ~ # mkfs.ext4 /dev/sda1
+root@archiso ~ # mkfs.ext4 /dev/sda1 or mkfs.fat -F32 /dev/sda1
 mke2fs 1.44.4 (18-Aug-2018)
 Creating filesystem with xxx 1k blocks and xxx inodes
 Filesystem UUID: xxx
@@ -140,10 +140,10 @@ lost+found
 root@archiso ~ # mkdir /mnt/home
 root@archiso ~ # ls /mnt
 home  lost+found
-root@archiso ~ # mkdir /mnt/boot
+root@archiso ~ # mkdir /mnt/boot or /boot/EFI
 root@archiso ~ # ls /mnt        
 boot  home  lost+found
-root@archiso ~ # mount /dev/sda1 /mnt/boot 
+root@archiso ~ # mount /dev/sda1 /mnt/boot or /boot/EFI
 root@archiso ~ # mount /dev/sda4 /mnt/home
 root@archiso ~ # lsblk
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
@@ -216,7 +216,9 @@ Total Installed Size:  29.95 MiB
     os-prober: To detect other OSes when generating grub.cfg in BIOS systems
     mtools: For grub-mkrescue FAT FS support
 
-[root@archiso /]# grub-install --target=i386-pc /dev/sda
+
+
+[root@archiso /]# grub-install --target=i386-pc /dev/sda or grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
 Installing for i386-pc platform.
 Installation finished. No error reported.
 
