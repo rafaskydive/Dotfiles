@@ -10,7 +10,7 @@ systemctl restart sshd
 
 ##Roadmap arch
 
-root@archiso ~ # timedatectl set-ntp true8
+root@archiso ~ # timedatectl set-ntp true
 root@archiso ~ # ping 1.1.1.1
 root@archiso ~ # fdisk -l
 
@@ -50,7 +50,7 @@ First sector (xxx, default xxx):
 Last sector, +sectors or +size{K,M,G,T,P} (xxx, default xxx): +25G
 
 Command (m for help): t
-			> 20
+			> 24
 			
 Command (m for help): n
 Partition number (4-128, default 4): 
@@ -60,7 +60,7 @@ Last sector, +sectors or +size{K,M,G,T,P} (xxx, default xxx):
 Created a new partition 4 of type 'Linux filesystem' and of size (xxx) GiB.
 
 Command (m for help): t
-			> 20
+			> 28
 
 Command (m for help): p
 Disk /dev/sda: xxx GiB, xxx bytes, xxx sectors
@@ -152,14 +152,14 @@ sda      8:0    0  xxxxG  0 disk
 └─sda4   8:4    0  xxxxG  0 part /mnt/home
 sr0     11:0    1   586M  0 rom  /run/archiso/bootmnt
 
-root@archiso ~ # pacstrap /mnt base base-devel vim openssh
+root@archiso ~ # pacstrap /mnt base base-devel vim
 ==> Creating install root at /mnt
 ==> Installing packages to /mnt
 :: Synchronizing package databases...
 
-root@archiso ~ # genfstab /mnt 
+.....................................
 
-..............................................
+root@archiso ~ # genfstab /mnt 
 
 # Remember editing and excluding the removeable media from fstab
 
