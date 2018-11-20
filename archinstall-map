@@ -1,5 +1,4 @@
-## Best option is to SSH into the machine you're working.
-
+## Easiest option to SSH into the machine you're working.
 ## Set it up with:
 
 vi /etc/ssh/sshd_config
@@ -9,7 +8,6 @@ vi /etc/ssh/sshd_config
 systemctl restart sshd
 
 Note: After installation it is recommended to harden SSH. The first step would be to remove PermitRootLogin yes from /etc/ssh/sshd_config.
-
 
 ##Roadmap arch
 
@@ -31,7 +29,7 @@ Last sector, +sectors or +size{K,M,G,T,P} (xxx, default xxx): +200M
 Created a new partition 1 of type 'Linux filesystem' and of size 200 MiB.
 
 Command (m for help): t
-			> 4
+			> 4 - 1
 
 Command (m for help): p
 
@@ -54,7 +52,9 @@ Last sector, +sectors or +size{K,M,G,T,P} (xxx, default xxx): +25G
 
 Command (m for help): t
 			> 24
-			
+
+Command (m for help): p
+
 Command (m for help): n
 Partition number (4-128, default 4): 
 First sector (xxx, default xxx): 
@@ -76,7 +76,7 @@ Disk identifier: xxx
 Device		Start	End	Sectors	Size	Type
 /dev/sda1	xxx   	xxx	xxx	200M	Linux filesystem
 /dev/sda2	xxx 	xxx	xxx	 12G	Linux filesystem
-/dev/sda3	xxx	xxx	xxx	 25G	Linux filesystem
+/dev/sda3	xxx	xxx	xxx	  xG	Linux filesystem
 /dev/sda4	xxx	xxx 	xxx	  xG	Linux filesystem
 
 Command (m for help): w
@@ -210,8 +210,8 @@ Total Installed Size:  29.95 MiB
 #Optional dependencies for grub
     freetype2: For grub-mkfont usage
     fuse2: For grub-mount usage
-    dosfstools: For grub-mkrescue FAT FS and EFI support
-    efibootmgr: For grub-install EFI support
+    dosfstools: For grub-mkrescue FAT FS and EFI support * needed for EFI
+    efibootmgr: For grub-install EFI support *needed for EFI
     libisoburn: Provides xorriso for generating grub rescue iso using grub-mkrescue
     os-prober: To detect other OSes when generating grub.cfg in BIOS systems
     mtools: For grub-mkrescue FAT FS support
@@ -221,6 +221,22 @@ Total Installed Size:  29.95 MiB
 [root@archiso /]# grub-install --target=i386-pc /dev/sda or grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
 Installing for i386-pc platform.
 Installation finished. No error reported.
+
+*********
+
+Then follow the below steps to install GRUB for EFI: 
+Mount the EFI system partition and in the remainder of this section, substitute esp with its mount point.
+Choose a bootloader identifier, here named GRUB. A directory of that name will be created to store the EFI binary in the ESP and this is the name that will appear in the UEFI boot menu to identify the GRUB boot entry.
+Execute the following command to install the GRUB EFI application grubx64.efi to esp/EFI/GRUB/ and install its modules to /boot/grub/x86_64-efi/.
+
+
+[root@archiso /]# grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
+
+After the above install completed the main GRUB directory is located at /boot/grub/. Note that grub-install also tries to create an entry in the firmware boot manager, named GRUB in the above example. 
+Remember to #Generate the main configuration file after finalizing #Configuration. 
+
+*********
+
 
 [root@archiso /]# grub-mkconfig -o /boot/grub/grub.cfg
 Generating grub configuration file ...
