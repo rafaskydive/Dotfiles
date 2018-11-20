@@ -8,6 +8,9 @@ vi /etc/ssh/sshd_config
 
 systemctl restart sshd
 
+Note: After installation it is recommended to harden SSH. The first step would be to remove PermitRootLogin yes from /etc/ssh/sshd_config.
+
+
 ##Roadmap arch
 
 root@archiso ~ # timedatectl set-ntp true
