@@ -165,7 +165,7 @@ root@archiso ~ # genfstab /mnt
 
 root@archiso ~ # genfstab -U /mnt >> /mnt/etc/fstab
 
-root@archiso ~ # vim /mnt/etc/fstab # to edit and remove removeable media links
+root@archiso ~ # vim /mnt/etc/fstab # to edit and remove removeable media links if that's the case
 
 root@archiso ~ # arch-chroot /mnt
 
