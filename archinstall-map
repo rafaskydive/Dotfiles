@@ -17,7 +17,7 @@ root@archiso ~ # timedatectl set-ntp true
 root@archiso ~ # ping 1.1.1.1
 root@archiso ~ # fdisk -l
 
-# make sure the partition used fro grub-install have a flag "4" for Bios Boot
+# make sure the partitions have a flag "4" for Bios Boot or "1" for EFI
 
 root@archiso ~ # fdisk /dev/sda
 Command (m for help): m
@@ -172,7 +172,7 @@ root@archiso ~ # vim /mnt/etc/fstab # to edit and remove removeable media links 
 
 root@archiso ~ # arch-chroot /mnt
 
-[root@archiso /]# pacman -S networkmanager
+[root@archiso /]# pacman -S networkmanager dialog
 resolving dependencies...
 looking for conflicting packages...
 
@@ -256,11 +256,33 @@ in my case "thecloud"
 
 [root@archiso /]# mkinitcpio -p linux
 
+[root@archiso /]# pacman -S w3w htop ranger openssh git 
+
+[root@archiso /]# pacman -Syyu
+
 [root@archiso /]# exit
 
 root@archiso ~ # umount -R /mnt
 
 root@archiso ~ # reboot
 
-
-
+##https://wiki.archlinux.org/index.php/NetworkManager
+#nmcli examples
+##List nearby wifi networks: 
+$ nmcli device wifi list
+##Connect to a wifi network: 
+$ nmcli device wifi connect SSID password password
+##Connect to a hidden network: 
+$ nmcli device wifi connect SSID password password hidden yes
+##Connect to a wifi on the wlan1 wifi interface: 
+$ nmcli device wifi connect SSID password password ifname wlan1 profile_name
+##Disconnect an interface: 
+$ nmcli device disconnect ifname eth0
+##Reconnect an interface marked as disconnected: 
+$ nmcli connection up uuid UUID
+##Get a list of UUIDs: 
+$ nmcli connection show
+##See a list of network devices and their state: 
+$ nmcli device
+##Turn off wifi: 
+$ nmcli radio wifi off
