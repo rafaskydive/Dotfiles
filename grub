@@ -1,4 +1,4 @@
-# If you change this file, run 'grub2-mkconfig -o /boot/grub2/grub.cfg' afterwards to update
+# If you change this file, run 'grub2-mkconfig -o /boot/grub2/grub.cfg' or 'grub-mkconfig -o /boot/grub/grub.cfg' afterwards to update
 # /boot/grub2/grub.cfg.
 
 # Uncomment to set your own custom distributor. If you leave it unset or empty, the default
