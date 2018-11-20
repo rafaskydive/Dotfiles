@@ -1,0 +1,261 @@
+## Best option is to SSH into the machine you're working.
+
+## Set it up with:
+
+vi /etc/ssh/sshd_config
+
+# Open port 22
+
+systemctl restart sshd
+
+##Roadmap arch
+
+root@archiso ~ # timedatectl set-ntp true8
+root@archiso ~ # ping 1.1.1.1
+root@archiso ~ # fdisk -l
+
+# make sure the partition used fro grub-install have a flag "4" for Bios Boot
+
+root@archiso ~ # fdisk /dev/sda
+Command (m for help): m
+Command (m for help): g
+Created a new GPT disklabel (GUID: xxx).
+Command (m for help): n
+Partition number (1-128, default 1): 1
+First sector (xxx, default xxx): 
+Last sector, +sectors or +size{K,M,G,T,P} (xxx, default xxx): +200M
+
+Created a new partition 1 of type 'Linux filesystem' and of size 200 MiB.
+
+Command (m for help): t
+			> 4
+
+Command (m for help): p
+
+Command (m for help): n
+Partition number (2-128, default 2): 2
+First sector (xxx, default xxx): 
+Last sector, +sectors or +size{K,M,G,T,P} (xxx, default xxx): +12G
+
+Created a new partition 2 of type 'Linux filesystem' and of size 12 GiB.
+
+Command (m for help): t
+			> 19
+
+Command (m for help): p
+
+Command (m for help): n
+Partition number (3-128, default 3): 
+First sector (xxx, default xxx): 
+Last sector, +sectors or +size{K,M,G,T,P} (xxx, default xxx): +25G
+
+Command (m for help): t
+			> 20
+			
+Command (m for help): n
+Partition number (4-128, default 4): 
+First sector (xxx, default xxx): 
+Last sector, +sectors or +size{K,M,G,T,P} (xxx, default xxx): 
+
+Created a new partition 4 of type 'Linux filesystem' and of size (xxx) GiB.
+
+Command (m for help): t
+			> 20
+
+Command (m for help): p
+Disk /dev/sda: xxx GiB, xxx bytes, xxx sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: xxx
+
+Device		Start	End	Sectors	Size	Type
+/dev/sda1	xxx   	xxx	xxx	200M	Linux filesystem
+/dev/sda2	xxx 	xxx	xxx	 12G	Linux filesystem
+/dev/sda3	xxx	xxx	xxx	 25G	Linux filesystem
+/dev/sda4	xxx	xxx 	xxx	  xG	Linux filesystem
+
+Command (m for help): w
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+
+root@archiso ~ # lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+loop0    7:0    0 474.1M  1 loop /run/archiso/sfs/airootfs
+sda      8:0    0  xxxxG  0 disk 
+├─sda1   8:1    0   200M  0 part 
+├─sda2   8:2    0    12G  0 part 
+├─sda3   8:3    0    25G  0 part 
+└─sda4   8:4    0  XXXXG  0 part 
+sr0     11:0    1   586M  0 rom  /run/archiso/bootmnt
+
+root@archiso ~ # mkfs.ext4 /dev/sda1
+mke2fs 1.44.4 (18-Aug-2018)
+Creating filesystem with xxx 1k blocks and xxx inodes
+Filesystem UUID: xxx
+Superblock backups stored on blocks: 
+	xxx, xxx, xxx, xxx, xxx
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (xxx blocks): done
+Writing superblocks and filesystem accounting information: done 
+
+root@archiso ~ # mkfs.ext4 /dev/sda3
+mke2fs 1.44.4 (18-Aug-2018)
+Creating filesystem with xxx 4k blocks and xxx inodes
+Filesystem UUID: xxx
+Superblock backups stored on blocks: 
+	xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: done 
+
+root@archiso ~ # mkfs.ext4 /dev/sda4
+mke2fs 1.44.4 (18-Aug-2018)
+Creating filesystem with xxx 4k blocks and xxx inodes
+Filesystem UUID: xxx
+Superblock backups stored on blocks: 
+	xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: done   
+
+root@archiso ~ # mkswap /dev/sda2
+Setting up swapspace version 1, size = x GiB (xxx bytes)
+no label, UUID= xxx
+root@archiso ~ # swapon /dev/sda2
+root@archiso ~ # mount /dev/sda3 /mnt
+root@archiso ~ # ls /mnt
+lost+found
+root@archiso ~ # mkdir /mnt/home
+root@archiso ~ # ls /mnt
+home  lost+found
+root@archiso ~ # mkdir /mnt/boot
+root@archiso ~ # ls /mnt        
+boot  home  lost+found
+root@archiso ~ # mount /dev/sda1 /mnt/boot 
+root@archiso ~ # mount /dev/sda4 /mnt/home
+root@archiso ~ # lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+loop0    7:0    0 474.1M  1 loop /run/archiso/sfs/airootfs
+sda      8:0    0  xxxxG  0 disk 
+├─sda1   8:1    0   200M  0 part /mnt/boot
+├─sda2   8:2    0    12G  0 part [SWAP]
+├─sda3   8:3    0    25G  0 part /mnt
+└─sda4   8:4    0  xxxxG  0 part /mnt/home
+sr0     11:0    1   586M  0 rom  /run/archiso/bootmnt
+
+root@archiso ~ # pacstrap /mnt base base-devel vim openssh
+==> Creating install root at /mnt
+==> Installing packages to /mnt
+:: Synchronizing package databases...
+
+root@archiso ~ # genfstab /mnt 
+
+..............................................
+
+# Remember editing and excluding the removeable media from fstab
+
+root@archiso ~ # genfstab -U /mnt >> /mnt/etc/fstab
+
+root@archiso ~ # vim /mnt/etc/fstab # to edit and remove removeable media links
+
+root@archiso ~ # arch-chroot /mnt
+
+[root@archiso /]# pacman -S networkmanager
+resolving dependencies...
+looking for conflicting packages...
+
+Packages (21) bluez-libs-5.50-3  dbus-glib-0.110-1  jansson-2.11-1  js52-52.9.0-1
+              libdaemon-0.14-4  libmm-glib-1.8.2-1  libndp-1.7-1  libnewt-0.52.20-2
+              libnm-1.14.5dev+17+gba83251bb-1  libnm-glib-1.14.5dev+17+gba83251bb-1
+              libpgm-5.2.122-3  libsodium-1.0.16-1  libteam-1.27-2  nspr-4.20-1
+              nss-3.40-2  openssl-1.0-1.0.2.p-1  polkit-0.115+3+g8638ec5-1
+              slang-2.3.2-1  wpa_supplicant-1:2.6-12  zeromq-4.2.5-1
+              networkmanager-1.14.5dev+17+gba83251bb-1
+
+Total Download Size:    21.51 MiB
+Total Installed Size:  106.24 MiB
+
+:: Proceed with installation? [Y/n] y
+
+[root@archiso /]# systemctl enable NetworkManager
+Created symlink /etc/systemd/system/dbus-org.freedesktop.NetworkManager.service → /usr/lib/systemd/system/NetworkManager.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.service → /usr/lib/systemd/system/NetworkManager.service.
+Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service → /usr/lib/systemd/system/NetworkManager-dispatcher.service.
+Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /usr/lib/systemd/system/NetworkManager-wait-online.service.
+
+
+[root@archiso /]# pacman -S grub
+resolving dependencies...
+looking for conflicting packages...
+
+Packages (1) grub-2:2.02-7
+
+Total Download Size:    5.97 MiB
+Total Installed Size:  29.95 MiB
+
+:: Proceed with installation? [Y/n] y
+
+#Optional dependencies for grub
+    freetype2: For grub-mkfont usage
+    fuse2: For grub-mount usage
+    dosfstools: For grub-mkrescue FAT FS and EFI support
+    efibootmgr: For grub-install EFI support
+    libisoburn: Provides xorriso for generating grub rescue iso using grub-mkrescue
+    os-prober: To detect other OSes when generating grub.cfg in BIOS systems
+    mtools: For grub-mkrescue FAT FS support
+
+[root@archiso /]# grub-install --target=i386-pc /dev/sda
+Installing for i386-pc platform.
+Installation finished. No error reported.
+
+[root@archiso /]# grub-mkconfig -o /boot/grub/grub.cfg
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-linux
+Found initrd image: /boot/initramfs-linux.img
+Found fallback initrd image(s) in /boot: initramfs-linux-fallback.img
+done
+
+[root@archiso /]# passwd
+New password: 
+Retype new password: 
+passwd: password updated successfully
+
+[root@archiso /]# vim /etc/locale.gen
+
+# uncomment the lines en_US ...
+
+[root@archiso /]# locale-gen
+Generating locales...
+  en_US.UTF-8... done
+  en_US.ISO-8859-1... done
+Generation complete.
+
+[root@archiso /]# vim /etc/locale.conf
+
+LANG=en-US.UTF-8
+
+[root@archiso /]# ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime && hwclock --systohc
+
+[root@archiso /]# vim /etc/hostname
+
+in my case "thecloud"
+
+[root@archiso /]# mkinitcpio -p linux
+
+[root@archiso /]# exit
+
+root@archiso ~ # umount -R /mnt
+
+root@archiso ~ # reboot
+
+
+
