@@ -274,7 +274,12 @@ in my case "thecloud"
 
 [root@archiso /]# mkinitcpio -p linux
 
-[root@archiso /]# pacman -S w3w htop ranger openssh git 
+[root@archiso /]# pacman -S w3w htop ranger openssh git pacman-contrib
+
+[root@archiso /]# cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+[root@archiso /]# awk '/^## Country Name$/{f=1}f==0{next}/^$/{exit}{print substr($0, 2)}' /etc/pacman.d/mirrorlist.backup
+[root@archiso /]# sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist.backup
+[root@archiso /]# rankmirrors -n 6 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 
 [root@archiso /]# pacman -Syyu
 
