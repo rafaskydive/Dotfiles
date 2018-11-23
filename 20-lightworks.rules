@@ -1,2 +1,0 @@
-# Lightworks console port rules
-KERNEL=="ttyUSB?", ATTRS{interface}=="Lightworks VIP Console Rev 1.1", MODE="0666", GROUP="users"
