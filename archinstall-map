@@ -309,3 +309,6 @@ $ nmcli connection show
 $ nmcli device
 ##Turn off wifi: 
 $ nmcli radio wifi off
+skydive420dz@thecloud ~> sudo vim /etc/tmpfiles.d/media.conf
+[sudo] password for skydive420dz:
+skydive420dz@thecloud ~> sudo vim /etc/udev/rules.d/99-udisks2.rules
